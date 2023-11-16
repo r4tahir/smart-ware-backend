@@ -1,74 +1,38 @@
-// // // // YOUR_BASE_DIRECTORY/netlify/functions/api.ts
+// functions/api.js
 
-// // // // import express, { Router } from "express";
-// // // // import serverless from "serverless-http";
-
-// // // const express = require("express");
-// // // const serverless = require("serverless-http");
-// // // const { Router } = require("express");
-
-// // // const api = express();
-
-// // // const router = Router();
-// // // router.get("/hello", (req, res) => res.send("Hello World!"));
-
-// // // // api.use("/api/", router);
-// // // api.use(router);
-
-// // // // export const handler = serverless(api);
-// // // module.exports.handler = serverless(api);
-
-
-// // // // const express = require("express");
-// // // // const serverless = require("serverless-http");
-// // // // const { Router } = require("express");
-
-// // // // const api = express();
-// // // // const router = Router();
-
-// // // // router.get("/hello", (req, res) => res.send("Hello World!"));
-// // // // api.use("/api/", router);
-
-// // // // module.exports.handler = serverless(api);
-
-
-
-// // const express = require("express");
-// // const serverless = require("serverless-http");
-// // const { Router } = require("express");
-
-// // const api = express();
-// // const router = Router();
-
-// // router.get("/hello", (req, res) => res.send("Hello World!"));
-
-// // api.use("/api", router); // Updated the route here
-
-// // module.exports.handler = serverless(api);
-
-
-
-
-// const express = require("express");
-// const serverless = require("serverless-http");
-
-// const app = express();
-
-// app.get("/hello", (req, res) => {
-//   res.status(200).json({ message: "Hello World!" });
-// });
-
-// module.exports.handler = serverless(app);
-
+require('dotenv').config({ path: './config.env' });
 
 const express = require("express");
-const serverless = require("serverless-http");
+const cors = require("cors");
+
+const dbo = require(".././db/conn"); // Adjust the path based on your file structure
 
 const app = express();
+const port = process.env.PORT || 5000;
 
-app.get("/.netlify/functions/api/hello", (req, res) => {
-  res.status(200).json({ message: "Hello World!" });
-});
+app.use(cors());
+app.use(express.json());
+app.use(require(".././routes/record")); // Adjust the path based on your file structure
 
-// Wrap your app in serverless function
-module.exports.handler = serverless(app);
+// This is a sample handler for your function
+exports.handler = async (event, context) => {
+  // Connect to the database
+  try {
+    await dbo.connectToServer();
+    console.log('Connected to MongoDB');
+    
+    // Your logic for handling the function's task here
+    // ...
+
+    // Return a response
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Function executed successfully' }),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'An error occurred' }),
+    };
+  }
+};
