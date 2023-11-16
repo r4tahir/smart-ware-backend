@@ -1,3 +1,4 @@
+const cors = require("cors");
 const dbo = require(".././db/conn"); // Adjust the path based on your file structure
 const { handler: apiHandler } = require("./api");
 
