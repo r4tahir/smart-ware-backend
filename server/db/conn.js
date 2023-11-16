@@ -1,7 +1,7 @@
 const { MongoClient } = require("mongodb");
 const Db = process.env.ATLAS_URI;
 console.log("fjdklsajfdklsajkfldsa")
-// console.log(Db);
+console.log(Db);
 
 const client = new MongoClient(Db, {
     useNewUrlParser: true,

@@ -27,7 +27,7 @@ exports.handler = async (event, context) => {
     // Return a response
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Function executed successfully' }),
+      body: JSON.stringify({ message: 'Connected to MongoDB' }),
     };
   } catch (error) {
     return {
